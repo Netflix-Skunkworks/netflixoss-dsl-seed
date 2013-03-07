@@ -7,7 +7,7 @@ repos.findAll { projectWhitelist.contains(it.name) }.each { repo ->
     println "$repo.name $repo.url"
     // Trunk build
     job {
-        name "test-${repo.name}-master"
+        name "${repo.name}-master"
         description ellipsize(repo.description, 255)
         logRotator(60,-1,-1,20)
         scm {
@@ -35,7 +35,7 @@ repos.findAll { projectWhitelist.contains(it.name) }.each { repo ->
     // Pull request build
     // Should be similar to above, but it's probably more readable to just repeat the code.
     job {
-        name "test-${repo.name}-pullrequest"
+        name "${repo.name}-pullrequest"
         description ellipsize(repo.description, 255)
         logRotator(60,-1,-1,20)
         scm {
