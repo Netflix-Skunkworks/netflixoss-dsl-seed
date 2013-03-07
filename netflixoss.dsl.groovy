@@ -14,8 +14,13 @@ repos.findAll { projectWhitelist.contains(it.name) }.each { repo ->
             git(repo.git_url, 'master')
         }
         jdk('Sun JDK 1.6 (latest)')
-        configure { node ->
-            node / 'com.cloudbees.jenkins.GitHubPushTrigger'(plugin:'github@1.5') / spec
+        configure { project ->
+            project / triggers / 'com.cloudbees.jenkins.GitHubPushTrigger'(plugin:'github@1.5') / spec {
+            }
+        }
+        configure { project ->
+            project / properties / 'nectar.plugins.rbac.groups.JobProxyGroupContainer'(plugin:'nectar-rbac@3.4') / groups {
+            }
         }
         steps {
             gradle('clean build')
@@ -32,8 +37,9 @@ repos.findAll { projectWhitelist.contains(it.name) }.each { repo ->
             git(repo.git_url, 'master')
         }
         jdk('Sun JDK 1.6 (latest)')
-        configure { node ->
-            node / 'com.cloudbees.jenkins.GitHubPushTrigger'(plugin:'github@1.5') / spec
+        configure { project -> 
+            project / triggers / 'com.cloudbees.jenkins.GitHubPushTrigger'(plugin:'github@1.5') / spec {
+            }
         }
         // TBD CloudBees pull request plugin
         steps {
