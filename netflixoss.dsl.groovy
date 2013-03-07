@@ -19,7 +19,7 @@ repos.findAll { projectWhitelist.contains(it.name) }.each { repo ->
             }
         }
         configure { project ->
-            project / properties / 'nectar.plugins.rbac.groups.JobProxyGroupContainer'(plugin:'nectar-rbac@3.4') / groups {
+            project / 'properties' / 'nectar.plugins.rbac.groups.JobProxyGroupContainer'(plugin:'nectar-rbac@3.4') / groups {
             }
         }
         steps {
