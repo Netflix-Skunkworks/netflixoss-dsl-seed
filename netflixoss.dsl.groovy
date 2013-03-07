@@ -15,15 +15,20 @@ repos.findAll { projectWhitelist.contains(it.name) }.each { repo ->
         }
         jdk('Sun JDK 1.6 (latest)')
         configure { project ->
-            project / triggers / 'com.cloudbees.jenkins.GitHubPushTrigger'(plugin:'github@1.5') / spec {
+            project / triggers / 'com.cloudbees.jenkins.GitHubPushTrigger'(plugin:"github@1.5") / spec {
             }
         }
         configure { project ->
-            project / 'properties' / 'nectar.plugins.rbac.groups.JobProxyGroupContainer'(plugin:'nectar-rbac@3.4') / groups {
+            project / 'properties' / 'nectar.plugins.rbac.groups.JobProxyGroupContainer'(plugin:"nectar-rbac@3.4") / groups {
+            }
+            project / 'properties' / 'com.cloudbees.jenkins.plugins.PublicKey'(plugin:"cloudbees-public-key@1.1") {
             }
         }
         steps {
             gradle('clean build')
+        }
+        publishers {
+            archiveJunit('**/build/test-results/TEST*.xml')
         }
     }
 
@@ -38,12 +43,22 @@ repos.findAll { projectWhitelist.contains(it.name) }.each { repo ->
         }
         jdk('Sun JDK 1.6 (latest)')
         configure { project -> 
-            project / triggers / 'com.cloudbees.jenkins.GitHubPushTrigger'(plugin:'github@1.5') / spec {
+            project / triggers / 'com.cloudbees.jenkins.GitHubPushTrigger'(plugin:"github@1.5") / spec {
             }
         }
-        // TBD CloudBees pull request plugin
+        configure { project ->
+            project / 'properties' / 'nectar.plugins.rbac.groups.JobProxyGroupContainer'(plugin:"nectar-rbac@3.4") / groups {
+            }
+            project / 'properties' / 'com.cloudbees.jenkins.plugins.PublicKey'(plugin:"cloudbees-public-key@1.1") {
+            }
+            project / 'properties' / 'com.cloudbees.jenkins.plugins.git.vmerge.JobPropertyImpl'(plugin:"git-validated-merge@3.6") / postBuildPushFailureHandler(class:"com.cloudbees.jenkins.plugins.git.vmerge.pbph.PushFailureIsFailure") 
+            project / 'properties' / 'com.coravy.hudson.plugins.github.GithubProjectProperty'(plugin:"github@1.5") / projectUrl('https://github.com/Netflix/RxJava/')
+        }
         steps {
             gradle('clean test')
+        }
+        publishers {
+            archiveJunit('**/build/test-results/TEST*.xml')
         }
     }
 }
