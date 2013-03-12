@@ -1,8 +1,14 @@
 
 import groovy.json.*
 
+// Get GitHub repo name from the parameters for this build
+def thr = Thread.currentThread()
+def build = thr?.executable
+def resolver = build.buildVariableResolver
+def project = resolver.resolve('project')
+
 def repos = new JsonSlurper().parseText("https://api.github.com/orgs/Netflix/repos".toURL().text)
-def projectWhitelist = ['RxJava']
+def projectWhitelist = ["${project}"]
 repos.findAll { projectWhitelist.contains(it.name) }.each { repo ->
     println "$repo.name $repo.url"
     // Trunk build
@@ -10,6 +16,7 @@ repos.findAll { projectWhitelist.contains(it.name) }.each { repo ->
         name "${repo.name}-master"
         description ellipsize(repo.description, 255)
         logRotator(60,-1,-1,20)
+        timeout(20)
         scm {
             git(repo.git_url, 'master')
         }
@@ -38,6 +45,7 @@ repos.findAll { projectWhitelist.contains(it.name) }.each { repo ->
         name "${repo.name}-pullrequest"
         description ellipsize(repo.description, 255)
         logRotator(60,-1,-1,20)
+        timeout(20)
         scm {
             git(repo.git_url, 'master')
         }
