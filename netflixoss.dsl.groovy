@@ -5,10 +5,10 @@ import groovy.json.*
 def thr = Thread.currentThread()
 def build = thr?.executable
 def resolver = build.buildVariableResolver
-def project = resolver.resolve('project')
+def projectToBuild = resolver.resolve('project')
 
 def repos = new JsonSlurper().parseText("https://api.github.com/orgs/Netflix/repos".toURL().text)
-def projectWhitelist = ["${project}"]
+def projectWhitelist = ["${projectToBuild}"]
 repos.findAll { projectWhitelist.contains(it.name) }.each { repo ->
     println "$repo.name $repo.url"
     // Trunk build
