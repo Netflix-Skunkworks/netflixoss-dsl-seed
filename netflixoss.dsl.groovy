@@ -6,7 +6,6 @@ def thr = Thread.currentThread()
 def build = thr?.executable
 def resolver = build.buildVariableResolver
 def projectToBuild = resolver.resolve('project')
-def projectToBuild = 'SimianArmy'
 
 def repos = new JsonSlurper().parseText("https://api.github.com/orgs/Netflix/repos".toURL().text)
 def projectWhitelist = projectToBuild
