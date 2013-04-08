@@ -4,3 +4,6 @@
 *.jar
 *.war
 *.ear
+
+# Generated job configs
+*.xml
