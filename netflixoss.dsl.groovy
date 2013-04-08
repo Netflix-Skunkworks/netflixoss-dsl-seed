@@ -53,7 +53,7 @@ repos.findAll { projectWhitelist.contains(it.name) }.each { repo ->
             project / 'properties' / 'nectar.plugins.rbac.groups.JobProxyGroupContainer'(plugin:'nectar-rbac@3.4') / groups ()
             project / 'properties' / 'com.cloudbees.jenkins.plugins.PublicKey'(plugin:'cloudbees-public-key@1.1')
             project / 'properties' / 'com.cloudbees.jenkins.plugins.git.vmerge.JobPropertyImpl'(plugin:'git-validated-merge@3.6') / postBuildPushFailureHandler(class:'com.cloudbees.jenkins.plugins.git.vmerge.pbph.PushFailureIsFailure')
-            project / 'properties' / 'com.coravy.hudson.plugins.github.GithubProjectProperty'(plugin:'github@1.5') / projectUrl('https://github.com/Netflix/RxJava/')
+            project / 'properties' / 'com.coravy.hudson.plugins.github.GithubProjectProperty'(plugin:'github@1.5') / projectUrl('${repo.html_url}/')
         }
 
         steps {
